@@ -122,8 +122,6 @@ Methods:
 
 Ceelo.java
 Data:
-    private Player player1, player2, player3
-    private Banker banker
     private static int topScore = 0
     private static String topScorer
     private static final BANKER_INITIAL_CHIPS = 1000
@@ -156,8 +154,8 @@ Methods:
 
     public void play
         Data:
-            private Banker banker
-            private Player player1, player2, player3
+            Banker banker
+            Player player1, player2, player3
         Flow:
             use scanner to ask for player names to construct 3 players
             greet players
