@@ -1,0 +1,232 @@
+Substructure:
+------------
+Banker.java:
+Data:
+    private int chips
+    private int score
+    private final Dice dice1, dice2, dice3
+
+Methods:
+    public int getScore
+        Data:
+            N/A
+        Flow:
+            return score
+
+    public void updateBalance
+        Data:
+            param int delta
+        Flow:
+            chips += delta
+            print balance
+
+    public void roll
+        Data:
+            N/A
+        Flow:
+            roll the 3 dices
+
+    public int getDiceValue
+        Data:
+            N/A
+        Flow:
+            return the value of a dice
+
+------------
+
+Player.java:
+Data:
+    private int chips
+    private int wager
+    private final String name
+    private final Dice dice1, dice2, dice3
+
+Methods:
+    constructor
+        Data:
+            param name, chips
+        Flow:
+            initialize name, chips
+
+    public void roll
+        Data:
+            N/A
+        Flow:
+            roll the 3 dices
+
+    public int getDiceValue
+        Data:
+            N/A
+        Flow:
+            return the value of a dice
+
+    public void setWager
+        Data:
+            param int wager
+        Flow:
+            set wages to wages
+
+    public void didWinWager
+        Data:
+            param boolean won
+        Flow:
+            if (won) chips += wager
+            else chips -= wager
+            wager = 0
+            print resulting balance
+
+    public int getWager
+        Data:
+            N/A
+        Flow:
+            return wager;
+
+    public int getChips
+        Data:
+            N/A
+        Flow:
+            return chips
+
+    public boolean outOfGame
+        Data:
+            N/A
+        Flow:
+            return chips < 0
+
+    public String getName
+        Data:
+            N/A
+        Flow:
+            return name
+
+----------
+
+Die.java
+Data:
+    private int result
+
+Methods:
+    public void roll
+        Data:
+            N/A
+        Flow:
+            set result to a random integer between 1 and 6
+
+    public int getResult
+        Data:
+            N/A
+        Flow:
+            return result
+
+----------
+
+Ceelo.java
+Data:
+    private Player player1, player2, player3
+    private Banker banker
+    private static int topScore = 0
+    private static String topScorer
+    private static final BANKER_INITIAL_CHIPS = 1000
+    private static final PLAYER_INITIAL_CHIPS = 100
+
+Methods:
+    private void playRound
+        Data:
+            N/A
+        Flow:
+            ask each player for a wager
+            banker rolls dice and determine outcome
+            the 3 players roll and determine outcomes, if bank scored
+            determine if game over  (bank or all 3 players out of chips)
+
+    private static int determineOutcome
+        Data:
+            param Player player
+        Flow:
+            roll the 3 die
+            if (rolls are 4, 5, 6 || a triple) return a win
+            else if (rolls are 1, 2, 3) return a loss
+            else if (double) return the third dice using scoreGenerator
+                if (roll1 == roll2) return roll3
+                else if (roll2 == roll3) return roll1
+                else return roll2
+            print result
+            else return request for reroll
+
+    public void play
+        Data:
+            private Banker banker
+            private Player player1, player2, player3
+        Flow:
+            use scanner to ask for player names to construct 3 players
+            greet players
+            create banker
+            repeat playRound until game over (if all 3 players ran out of chips or the banker ran out)
+            print outcome
+            update the top score scores
+            print menu
+
+    private void bankerTurn
+        Data:
+            param Banker banker
+        Flow:
+            determineOutcome
+            if outcome is win, add each players' wager to the bank, tell each player they lost their wager, round over
+            else if the outcome is lose, subtract each players' wager from the bank, tell each player they won their wager, round over
+            else, store the score
+            print result
+
+    private void playerTurn
+        Data:
+            param Player player
+        Flow:
+            if (player not out of game && bank not broken)
+                determineOutcome
+                if win: subtract wager from banker and win that wager
+                if lose: add wager to banker and lose that wager
+                else if outcome number >= banker score, treat as win, else treat as lose
+                print result
+
+    private void printMenu
+        Data:
+            N/A
+        Flow:
+            print the menu with options to play new round, show top score, quit
+            use scanner to pick up an option
+
+    private static void printHighScore
+        Data:
+            N/A
+        Flow:
+            print top score
+
+    private void printPlayerOptions
+        Data:
+            param Player player
+        Flow:
+            menu is roll (if already wagered) or set wager and check balance
+            use scanner to determine option
+
+    private static void setPlayerWager
+        Data:
+            param Player player
+        Flow:
+            print balance
+            use scanner to ask name for a wager
+            if (wager > 0 && wager > chips) wager = wager
+            else repeat
+
+    public static int getTopScore
+        Data:
+            N/A
+        Flow:
+            return topScore
+
+    public static int updateTopScore
+        Data:
+            N/A
+        Flow:
+            for each player
+                if (chips > topScore)
+                    topScore = chips
+                    topScorer = name
