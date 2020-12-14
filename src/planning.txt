@@ -4,7 +4,7 @@ Banker.java:
 Data:
     private int chips
     private int score
-    private final Dice dice1, dice2, dice3
+    private final Dice DICE1, DICE2, DICE3
 
 Methods:
     public int getScore
@@ -38,8 +38,8 @@ Player.java:
 Data:
     private int chips
     private int wager
-    private final String name
-    private final Dice dice1, dice2, dice3
+    private final String NAME
+    private final Dice DICE1, DICE2, DICE3
 
 Methods:
     constructor
@@ -101,16 +101,16 @@ Methods:
 
 ----------
 
-Die.java
+Dice.java
 Data:
-    private int result
+    private int result, sides
 
 Methods:
     public void roll
         Data:
             N/A
         Flow:
-            set result to a random integer between 1 and 6
+            set result to a random integer between 1 and sides
 
     public int getResult
         Data:
@@ -128,6 +128,7 @@ Data:
     private static String topScorer
     private static final BANKER_INITIAL_CHIPS = 1000
     private static final PLAYER_INITIAL_CHIPS = 100
+    private static final DICE_SIDES  = 6
 
 Methods:
     private void playRound
