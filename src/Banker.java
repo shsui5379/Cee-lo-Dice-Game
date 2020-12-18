@@ -98,4 +98,13 @@ public class Banker {
   public void updateBalance(int delta) {
     chips += delta;
   }
+
+
+  /**
+   * Returns whether the bank is broken
+   * @return true if the bank is not broken
+   */
+  public boolean notBroken() {
+    return chips > 0;
+  }
 }
