@@ -99,7 +99,7 @@ public class Player {
    * Adjusts this player's balance based on whether the player won their wager or not
    * @param didWinWager Whether this player won their wager
    */
-  public void adjustWBalance(boolean didWinWager) {
+  public void adjustBalance(boolean didWinWager) {
     if (didWinWager) chips += wager;
     else chips -= wager;
 
