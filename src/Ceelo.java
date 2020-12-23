@@ -139,11 +139,11 @@ public class Ceelo {
     //print outcome
     System.out.println("The banker rolled a " + banker.getDice1Value() + ", " + banker.getDice2Value() + " and a " + banker.getDice3Value());
 
-    if (outcome == OUTCOME_WIN) System.out.print("The banker won this round ");
-    else if (outcome == OUTCOME_LOSE) System.out.print("The banker lost this round ");
+    if (outcome == OUTCOME_WIN) System.out.print("The banker won this round");
+    else if (outcome == OUTCOME_LOSE) System.out.print("The banker lost this round");
     else System.out.println("The banker scored a " + banker.getScore());
 
-    System.out.println("and has " + banker.getChips() + " chips left");
+    System.out.println(" and has " + banker.getChips() + " chips left");
   }
 
   private static void playerTurn(Player player, Banker banker) {
