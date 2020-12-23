@@ -1,4 +1,3 @@
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -284,8 +283,10 @@ public class Ceelo {
    * @param player player with new top score
    */
   private static void updateTopScore(Player player) {
-    topScore = player.getChips();
-    topScorer = player.getName();
+    if (player.getChips() > topScore) {
+      topScore = player.getChips();
+      topScorer = player.getName();
+    }
   }
 
   /**
