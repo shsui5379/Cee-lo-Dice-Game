@@ -100,7 +100,10 @@ public class Ceelo {
   }
 
   /**
-   * Logic for the banker's turn
+   * Logic for the banker's turn <br />
+   * If the banker wins, the players lose their wager to the banker <br />
+   * If the banker loses, the players win their wager from the banker <br />
+   * If the banker scores, the players roll
    * @param banker The banker playing this turn
    * @param player1 Player 1 involved in the game
    * @param player2 Player 2 involved in the game
@@ -147,7 +150,9 @@ public class Ceelo {
   }
 
   /**
-   * Logic for a player's turn
+   * Logic for a player's turn <br />
+   * If the player wins, they win their wager from the banker <br />
+   * If the player loses, they lose their wager to the banker
    * @param player The player playing this turn
    * @param banker The banker in this game
    */
@@ -184,20 +189,36 @@ public class Ceelo {
   }
 
   /**
-   *
-   * @param roll1
-   * @param roll2
-   * @param roll3
+   * Output a integer value signalling what a player should do based on dice rolls <br />
+   * Wins are for triples and 4, 5, 6 <br />
+   * Loses are 1, 2, 3 <br />
+   * Scores are the third dice when a double occurs
+   * @param roll1 the player's 1st dice value
+   * @param roll2 the player's 2nd dice value
+   * @param roll3 the player's 3rd dice value
    * @return 0 for lose round, 10 for win round, -1 for reroll, int from 1-6 for score
    */
   private static int determineOutcome(int roll1, int roll2, int roll3) {
-
+    if ((roll1 == roll2 && roll2 == roll3) ||
+            ((roll1 == 4 || roll2 == 4 || roll3 == 4) &&
+            (roll1 == 5 || roll2 == 5 || roll3 == 5) &&
+            (roll1 == 6 || roll2 == 6 || roll3 == 6))
+    ) {
+      return OUTCOME_WIN;
+    } else if ((roll1 == 1 || roll2 == 1 || roll3 == 1) &&
+            (roll1 == 2 || roll2 == 2 || roll3 == 2) &&
+            (roll1 == 3 || roll2 == 3 || roll3 == 3)) {
+      return OUTCOME_LOSE;
+    } else if (roll1 == roll2 && roll1 != roll3) {
+      return roll3;
+    } else if (roll1 == roll3 && roll1 != roll2) {
+      return roll2;
+    } else if (roll2 == roll3 && roll1 != roll2) {
+      return roll1;
+    }
+    return OUTCOME_REROLL;
   }
 
-
-  private static void printPlayerOptions() {
-
-  }
 
   private static void setPlayerWager(Player player) {
 
