@@ -61,10 +61,10 @@ public class Ceelo {
     //end game
     if (banker.notBroken()) System.out.println("The banker won the game with " + banker.getChips() + " chips!");
     else {
-      if (player1.stillInGame()) {
+      if (player1.getChips() > player2.getChips() && player1.getChips() > player3.getChips()) {
         System.out.println(player1.getName() + " won the game with " + player1.getChips() + " chips!");
         updateTopScore(player1);
-      } else if (player2.stillInGame()) {
+      } else if (player2.getChips() > player1.getChips() && player2.getChips() > player3.getChips()) {
         System.out.println(player2.getName() + " won the game with " + player2.getChips() + " chips!");
         updateTopScore(player2);
       } else {
@@ -147,7 +147,12 @@ public class Ceelo {
   }
 
   private static void playerTurn(Player player, Banker banker) {
+    if (player.stillInGame() && banker.notBroken()) {
 
+
+
+    } else if (!player.stillInGame())
+      System.out.println(player.getName() + " ran out of chips and is out of the game");
   }
 
   /**
