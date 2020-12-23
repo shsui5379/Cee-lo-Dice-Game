@@ -141,18 +141,46 @@ public class Ceelo {
 
     if (outcome == OUTCOME_WIN) System.out.print("The banker won this round");
     else if (outcome == OUTCOME_LOSE) System.out.print("The banker lost this round");
-    else System.out.println("The banker scored a " + banker.getScore());
+    else System.out.print("The banker scored a " + banker.getScore());
 
     System.out.println(" and has " + banker.getChips() + " chips left");
   }
 
+  /**
+   * Logic for a player's turn
+   * @param player The player playing this turn
+   * @param banker The banker in this game
+   */
   private static void playerTurn(Player player, Banker banker) {
-    if (player.stillInGame() && banker.notBroken()) {
+    if (player.stillInGame() && banker.notBroken() && banker.getScore() > 0) {
 
+      //rolling
+      int outcome = OUTCOME_REROLL;
+      while (outcome == OUTCOME_REROLL) {
+        player.roll();
+        outcome = determineOutcome(player.getDice1Value(), player.getDice2Value(), player.getDice3Value());
+      }
 
+      //action
+      int multiplier;
+      if (outcome == OUTCOME_LOSE || outcome < banker.getScore()) multiplier = 1; //player loses - banker wins
+      else multiplier = -1; //player wins - banker loses
 
-    } else if (!player.stillInGame())
+      banker.updateBalance(multiplier * player.getWager());
+      player.adjustBalance(outcome == OUTCOME_WIN || outcome > banker.getScore());
+
+      //print
+      System.out.println(player.getName() + " rolled a " + player.getDice1Value() + ", " + player.getDice2Value() + ", " + player.getDice3Value());
+
+      if (outcome == OUTCOME_WIN || outcome > banker.getScore()) System.out.print(player.getName() + " won their wager");
+      else System.out.print(player.getName() + " lost their wager");
+
+      System.out.println(" and has " + player.getChips() + " chips left");
+
+    } else if (!player.stillInGame()) //out of game
       System.out.println(player.getName() + " ran out of chips and is out of the game");
+    else if (!banker.notBroken()) //bank broke
+      System.out.println("The bank broke and the game is over");
   }
 
   /**
