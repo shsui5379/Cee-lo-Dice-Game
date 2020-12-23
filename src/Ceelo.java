@@ -51,7 +51,7 @@ public class Ceelo {
     input = SCANNER.nextLine();
     Player player3 = new Player(input, PLAYER_INITIAL_CHIPS, DICE_SIDES);
 
-    System.out.println("Welcome to the Cee-lo Dice Game, " + player1.getName() + ", " + player2.getName() + " and " + player3.getName() + "!");
+    System.out.println("Welcome to the Cee-lo Dice Game, " + player1.getName() + ", " + player2.getName() + " and " + player3.getName() + "!\n");
 
 
     //launching rounds if possible
@@ -91,6 +91,8 @@ public class Ceelo {
     setPlayerWager(player2);
     setPlayerWager(player3);
 
+    System.out.println();
+
     //gameplay
 
     bankerTurn(banker, player1, player2, player3);
@@ -98,6 +100,8 @@ public class Ceelo {
     playerTurn(player1, banker);
     playerTurn(player2, banker);
     playerTurn(player3, banker);
+
+    System.out.println();
   }
 
   /**
@@ -141,13 +145,19 @@ public class Ceelo {
     }
 
     //print outcome
-    System.out.println("The banker rolled a " + banker.getDice1Value() + ", " + banker.getDice2Value() + " and a " + banker.getDice3Value());
+    System.out.println("The banker rolled a " + banker.getDice1Value() + ", " + banker.getDice2Value() + ", " + banker.getDice3Value());
 
     if (outcome == OUTCOME_WIN) System.out.print("The banker won this round");
     else if (outcome == OUTCOME_LOSE) System.out.print("The banker lost this round");
     else System.out.print("The banker scored a " + banker.getScore());
 
     System.out.println(" and has " + banker.getChips() + " chips left");
+
+    System.out.println(player1.getName() + " has " + player1.getChips() + " chips left");
+    System.out.println(player2.getName() + " has " + player2.getChips() + " chips left");
+    System.out.println(player3.getName() + " has " + player3.getChips() + " chips left");
+
+    System.out.println();
   }
 
   /**
@@ -173,20 +183,25 @@ public class Ceelo {
       else multiplier = -1; //player wins - banker loses
 
       banker.updateBalance(multiplier * player.getWager());
-      player.adjustBalance(outcome == OUTCOME_WIN || outcome > banker.getScore());
+      player.adjustBalance(outcome == OUTCOME_WIN || outcome >= banker.getScore());
 
       //print
       System.out.println(player.getName() + " rolled a " + player.getDice1Value() + ", " + player.getDice2Value() + ", " + player.getDice3Value());
 
-      if (outcome == OUTCOME_WIN || outcome > banker.getScore()) System.out.print(player.getName() + " won their wager");
+      if (outcome != OUTCOME_LOSE && outcome != OUTCOME_WIN) System.out.println(player.getName() + " scored a " + outcome);
+
+      if (outcome == OUTCOME_WIN || outcome >= banker.getScore()) System.out.print(player.getName() + " won their wager");
       else System.out.print(player.getName() + " lost their wager");
 
       System.out.println(" and has " + player.getChips() + " chips left");
+      System.out.println("The bank now has " + banker.getChips() + " chips");
 
-    } else if (!player.stillInGame()) //out of game
+    } else if (!player.stillInGame() && banker.getScore() > 0) //out of game
       System.out.println(player.getName() + " ran out of chips and is out of the game");
-    else if (!banker.notBroken()) //bank broke
+    else if (!banker.notBroken() && banker.getScore() > 0) //bank broke
       System.out.println("The bank broke and the game is over");
+
+    System.out.println();
   }
 
   /**
@@ -226,15 +241,19 @@ public class Ceelo {
    * @param player the player wagering
    */
   private static void setPlayerWager(Player player) {
-    int input = -1;
+    if (player.stillInGame()) {
+      int input = -1;
 
-    while (input < 0 || input > player.getChips()) {
-      System.out.print(player.getName() + ", you have " + player.getChips() + ".  How many chips would you like to wager?");
-      input = SCANNER.nextInt();
-      SCANNER.nextLine();
+      while (input <= 0 || input > player.getChips()) {
+        System.out.print(player.getName() + ", you have " + player.getChips() + " chips.  How many chips would you like to wager?  ");
+        input = SCANNER.nextInt();
+        SCANNER.nextLine();
+      }
+
+      player.setWager(input);
+    } else {
+      System.out.println(player.getName() + ", you have no chips left and cannot wager");
     }
-
-    player.setWager(input);
   }
 
 
@@ -243,6 +262,7 @@ public class Ceelo {
    */
   private void printMenu() {
     //menu
+    System.out.println();
     System.out.println("Press any key to play a new game");
     System.out.println("Press x to exit");
     System.out.println("Press h to view high score");
@@ -272,6 +292,8 @@ public class Ceelo {
    * Prints the top score of the game and who got that score
    */
   private static void printTopScore() {
+    System.out.println();
     System.out.println(topScore + " - " + topScorer);
+    System.out.println();
   }
 }
