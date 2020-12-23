@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -28,7 +29,7 @@ public class Ceelo {
 
 
   /** Scanner for getting user input */
-  Scanner scanner = new Scanner(System.in);
+  private static final Scanner SCANNER = new Scanner(System.in);
 
   /**
    * Launching point of this game
@@ -39,15 +40,15 @@ public class Ceelo {
     String input;
 
     System.out.print("Player 1, what is your name?  ");
-    input = scanner.nextLine();
+    input = SCANNER.nextLine();
     Player player1 = new Player(input, PLAYER_INITIAL_CHIPS, DICE_SIDES);
 
     System.out.print("Player 2, what is your name?  ");
-    input = scanner.nextLine();
+    input = SCANNER.nextLine();
     Player player2 = new Player(input, PLAYER_INITIAL_CHIPS, DICE_SIDES);
 
     System.out.print("Player 3, what is your name?  ");
-    input = scanner.nextLine();
+    input = SCANNER.nextLine();
     Player player3 = new Player(input, PLAYER_INITIAL_CHIPS, DICE_SIDES);
 
     System.out.println("Welcome to the Cee-lo Dice Game, " + player1.getName() + ", " + player2.getName() + " and " + player3.getName() + "!");
@@ -220,20 +221,57 @@ public class Ceelo {
   }
 
 
+  /**
+   * Asks the player for a valid amount of chips to wager, and set their wager
+   * @param player the player wagering
+   */
   private static void setPlayerWager(Player player) {
+    int input = -1;
 
+    while (input < 0 || input > player.getChips()) {
+      System.out.print(player.getName() + ", you have " + player.getChips() + ".  How many chips would you like to wager?");
+      input = SCANNER.nextInt();
+      SCANNER.nextLine();
+    }
+
+    player.setWager(input);
   }
 
 
+  /**
+   * Gives the user options at the end of the game to play a new game, view high score or exit
+   */
   private void printMenu() {
+    //menu
+    System.out.println("Press any key to play a new game");
+    System.out.println("Press x to exit");
+    System.out.println("Press h to view high score");
 
+    //processing
+
+    String input = SCANNER.nextLine().toLowerCase();
+
+    if (input.equals("h")) {
+      printTopScore();
+      printMenu();
+    } else if (!input.equals("x")) {
+      play();
+    }
   }
 
+  /**
+   * updates the tracked top score and scorer
+   * @param player player with new top score
+   */
   private static void updateTopScore(Player player) {
-
+    topScore = player.getChips();
+    topScorer = player.getName();
   }
 
+  /**
+   * Prints the top score of the game and who got that score
+   */
   private static void printTopScore() {
-
+    System.out.println(topScore + " - " + topScorer);
   }
 }
