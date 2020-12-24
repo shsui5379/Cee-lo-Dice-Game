@@ -178,6 +178,7 @@ public class Ceelo {
 
       //action
       int multiplier;
+      int wager = player.getWager();
       if (outcome == OUTCOME_LOSE || outcome < banker.getScore()) multiplier = 1; //player loses - banker wins
       else multiplier = -1; //player wins - banker loses
 
@@ -189,8 +190,8 @@ public class Ceelo {
 
       if (outcome != OUTCOME_LOSE && outcome != OUTCOME_WIN) System.out.println(player.getName() + " scored a " + outcome);
 
-      if (outcome == OUTCOME_WIN || outcome >= banker.getScore()) System.out.print(player.getName() + " won their wager");
-      else System.out.print(player.getName() + " lost their wager");
+      if (outcome == OUTCOME_WIN || outcome >= banker.getScore()) System.out.print(player.getName() + " won " + wager + " chips");
+      else System.out.print(player.getName() + " lost " + wager + " chips");
 
       System.out.println(" and has " + player.getChips() + " chips left");
       System.out.println("The bank now has " + banker.getChips() + " chips");
